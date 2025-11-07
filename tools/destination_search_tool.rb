@@ -3,59 +3,6 @@
 # This demonstrates business rules implementation with membership tiers
 
 class DestinationSearchTool
-  # Tool metadata for LLM
-  def self.name
-    "search_destinations"
-  end
-
-  def self.description
-    "Search for travel destinations available with your SkyTraveler membership pass. "\
-    "Check which destinations you can visit based on your pass tier (Silver, Gold, or Platinum). "\
-    "Each tier unlocks different destination categories. "\
-    "Examples: 'Where can I go with Silver pass?', 'What destinations are available with my Gold membership?'"
-  end
-
-  def self.parameters
-    {
-      type: "object",
-      properties: {
-        pass_tier: {
-          type: "string",
-          enum: ["silver", "gold", "platinum"],
-          description: "Your SkyTraveler membership pass tier"
-        },
-        query: {
-          type: "string",
-          description: "What you're looking for (e.g., 'beach', 'culture', 'adventure') - optional",
-          default: "any"
-        },
-        season: {
-          type: "string",
-          enum: ["spring", "summer", "fall", "winter", "any"],
-          description: "Preferred travel season (optional)",
-          default: "any"
-        },
-        limit: {
-          type: "integer",
-          description: "Maximum number of results (1-20, default: 10)",
-          default: 10
-        }
-      },
-      required: ["pass_tier"]
-    }
-  end
-
-  def self.to_openai
-    {
-      type: "function",
-      function: {
-        name: name,
-        description: description,
-        parameters: parameters
-      }
-    }
-  end
-
   def execute(pass_tier:, query: "any", season: "any", limit: 10)
     # Validate inputs
     pass_tier = pass_tier.to_s.downcase

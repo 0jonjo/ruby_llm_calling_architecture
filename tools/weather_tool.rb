@@ -7,46 +7,6 @@ require 'json'
 require 'uri'
 
 class WeatherTool
-  # Tool metadata for LLM
-  def self.name
-    "get_current_weather"
-  end
-
-  def self.description
-    "Get the current weather for a specific city. Use this when users ask about weather conditions, temperature, or forecasts."
-  end
-
-  def self.parameters
-    {
-      type: "object",
-      properties: {
-        city: {
-          type: "string",
-          description: "The city name (e.g., 'Paris', 'Tokyo', 'New York')"
-        },
-        units: {
-          type: "string",
-          enum: ["celsius", "fahrenheit"],
-          description: "Temperature units (default: celsius)",
-          default: "celsius"
-        }
-      },
-      required: ["city"]
-    }
-  end
-
-  # Convert to OpenAI function format
-  def self.to_openai
-    {
-      type: "function",
-      function: {
-        name: name,
-        description: description,
-        parameters: parameters
-      }
-    }
-  end
-
   # Execute the tool
   def execute(city:, units: "celsius")
     # Input validation

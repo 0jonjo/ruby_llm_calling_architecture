@@ -3,58 +3,6 @@
 # This demonstrates the "halt pattern" for structured data extraction
 
 class ItineraryBuilderTool
-  # Tool metadata for LLM
-  def self.name
-    "build_itinerary"
-  end
-
-  def self.description
-    "Build a structured travel itinerary with daily activities. "\
-    "Provide the destination, number of days, and preferences. "\
-    "Returns a complete day-by-day itinerary with activities, meals, and tips."
-  end
-
-  def self.parameters
-    {
-      type: "object",
-      properties: {
-        destination: {
-          type: "string",
-          description: "The destination city or country"
-        },
-        days: {
-          type: "integer",
-          description: "Number of days for the trip (1-14)",
-          minimum: 1,
-          maximum: 14
-        },
-        interests: {
-          type: "array",
-          items: { type: "string" },
-          description: "List of interests (e.g., ['culture', 'food', 'nature'])"
-        },
-        pace: {
-          type: "string",
-          enum: ["relaxed", "moderate", "packed"],
-          description: "Trip pace: relaxed (2-3 activities/day), moderate (4-5), or packed (6+)",
-          default: "moderate"
-        }
-      },
-      required: ["destination", "days"]
-    }
-  end
-
-  def self.to_openai
-    {
-      type: "function",
-      function: {
-        name: name,
-        description: description,
-        parameters: parameters
-      }
-    }
-  end
-
   # Result class to signal halt (immediate return without LLM synthesis)
   class HaltResult
     attr_reader :content
@@ -187,19 +135,3 @@ class ItineraryBuilderTool
     }
   end
 end
-
-# Example usage (uncomment to test)
-# tool = ItineraryBuilderTool.new
-# result = tool.execute(
-#   destination: "Paris",
-#   days: 3,
-#   interests: ["culture", "food"],
-#   pace: "moderate"
-# )
-#
-# if result.is_a?(ItineraryBuilderTool::HaltResult)
-#   puts "HALT RESULT (would be returned directly):"
-#   puts JSON.pretty_generate(result.content)
-# else
-#   puts result.inspect
-# end
