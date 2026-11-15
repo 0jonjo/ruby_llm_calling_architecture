@@ -17,8 +17,8 @@ require_relative 'tools/itinerary_builder_tool'
 # Wrapper tools for ruby_llm compatibility
 class RubyLLMWeatherTool < RubyLLM::Tool
   description "Get the current weather for a specific city"
-  param :city, type: 'string', desc: "City name (e.g., 'Paris', 'Tokyo')", required: true
-  param :units, type: 'string', desc: "Temperature units: 'celsius' or 'fahrenheit'", required: false
+  parameter :city, type: 'string', description: "City name (e.g., 'Paris', 'Tokyo')", required: true
+  parameter :units, type: 'string', description: "Temperature units: 'celsius' or 'fahrenheit'", required: false
 
   def execute(city:, units: 'celsius')
     WeatherTool.new.execute(city: city, units: units)
@@ -27,10 +27,10 @@ end
 
 class RubyLLMDestinationTool < RubyLLM::Tool
   description "Search for SkyTraveler pass destinations. Check which destinations you can visit based on your membership pass tier (Silver, Gold, or Platinum). Silver unlocks regional destinations, Gold adds continental destinations, Platinum unlocks worldwide luxury destinations."
-  param :pass_tier, type: 'string', desc: "Your SkyTraveler pass tier: 'silver', 'gold', or 'platinum'", required: true
-  param :query, type: 'string', desc: "What you're looking for (e.g., 'beach', 'culture', 'adventure')", required: false
-  param :season, type: 'string', desc: "Preferred season: 'spring', 'summer', 'fall', 'winter'", required: false
-  param :limit, type: 'integer', desc: "Max number of results", required: false
+  parameter :pass_tier, type: 'string', description: "Your SkyTraveler pass tier: 'silver', 'gold', or 'platinum'", required: true
+  parameter :query, type: 'string', description: "What you're looking for (e.g., 'beach', 'culture', 'adventure')", required: false
+  parameter :season, type: 'string', description: "Preferred season: 'spring', 'summer', 'fall', 'winter'", required: false
+  parameter :limit, type: 'integer', description: "Max number of results", required: false
 
   def execute(pass_tier:, query: 'any', season: 'any', limit: 10)
     DestinationSearchTool.new.execute(pass_tier: pass_tier, query: query, season: season, limit: limit)
@@ -39,9 +39,9 @@ end
 
 class RubyLLMItineraryTool < RubyLLM::Tool
   description "Create a detailed day-by-day travel itinerary for a destination"
-  param :destination, type: 'string', desc: "Destination city", required: true
-  param :days, type: 'integer', desc: "Number of days", required: true
-  param :pace, type: 'string', desc: "Travel pace: 'relaxed', 'moderate', or 'fast'", required: false
+  parameter :destination, type: 'string', description: "Destination city", required: true
+  parameter :days, type: 'integer', description: "Number of days", required: true
+  parameter :pace, type: 'string', description: "Travel pace: 'relaxed', 'moderate', or 'fast'", required: false
 
   def execute(destination:, days:, pace: 'moderate')
     result = ItineraryBuilderTool.new.execute(
